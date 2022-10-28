@@ -25,7 +25,7 @@ class MySqlReportController extends AbstractController
     {
         $statusRepository = GeneralUtility::makeInstance(StatusRepository::class);
 
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
         $moduleTemplate->assign('status', $statusRepository->findAll());
 
         return $moduleTemplate->renderResponse('Overview');
@@ -33,7 +33,7 @@ class MySqlReportController extends AbstractController
 
     public function informationAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
 
         $page = $this->pageFinder->getPageByIdentifier('information');
         if ($page instanceof Page) {
@@ -45,7 +45,7 @@ class MySqlReportController extends AbstractController
 
     public function innoDbAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
 
         $page = $this->pageFinder->getPageByIdentifier('innoDb');
         if ($page instanceof Page) {
@@ -57,7 +57,7 @@ class MySqlReportController extends AbstractController
 
     public function threadCacheAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
 
         $page = $this->pageFinder->getPageByIdentifier('threadCache');
         if ($page instanceof Page) {
@@ -69,7 +69,7 @@ class MySqlReportController extends AbstractController
 
     public function tableCacheAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
 
         $page = $this->pageFinder->getPageByIdentifier('tableCache');
         if ($page instanceof Page) {
@@ -81,7 +81,7 @@ class MySqlReportController extends AbstractController
 
     public function queryCacheAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
 
         $page = $this->pageFinder->getPageByIdentifier('queryCache');
         if ($page instanceof Page) {
@@ -93,7 +93,7 @@ class MySqlReportController extends AbstractController
 
     public function miscAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
 
         $page = $this->pageFinder->getPageByIdentifier('misc');
         if ($page instanceof Page) {

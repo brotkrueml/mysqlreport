@@ -13,6 +13,7 @@ namespace StefanFroemken\Mysqlreport\Controller;
 
 use StefanFroemken\Mysqlreport\Menu\PageFinder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -20,22 +21,15 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Abstract Controller with useful methods like adding buttons to BE view
  */
 abstract class AbstractController extends ActionController
 {
-    /**
-     * @var PageFinder
-     */
-    protected $pageFinder;
+    protected PageFinder $pageFinder;
 
-    /**
-     * @var ModuleTemplateFactory
-     */
-    protected $moduleTemplateFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     public function injectPageFinder(PageFinder $pageFinder): void
     {
@@ -47,15 +41,14 @@ abstract class AbstractController extends ActionController
         $this->moduleTemplateFactory = $moduleTemplateFactory;
     }
 
-    protected function initializeView(ViewInterface $view): void
+    protected function getView(): ModuleTemplate
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
 
-        $buttonBar = $this->moduleTemplateFactory
-            ->create($this->request)
-            ->getDocHeaderComponent()
-            ->getButtonBar();
+        $view = $this->moduleTemplateFactory->create($this->request);
+
+        $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
         // Overview
         $overviewButton = $buttonBar
@@ -79,6 +72,8 @@ abstract class AbstractController extends ActionController
                 ->setDisplayName('Shortcut');
             $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }
+
+        return $view;
     }
 
     protected function getIconFactory(): IconFactory

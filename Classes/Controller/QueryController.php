@@ -42,7 +42,7 @@ class QueryController extends AbstractController
 
     public function filesortAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
         $moduleTemplate->assign('profileRecords', $this->profileRepository->findProfileRecordsWithFilesort());
 
         return $moduleTemplate->renderResponse('Filesort');
@@ -50,7 +50,7 @@ class QueryController extends AbstractController
 
     public function fullTableScanAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
         $moduleTemplate->assign('profileRecords', $this->profileRepository->findProfileRecordsWithFullTableScan());
 
         return $moduleTemplate->renderResponse('FullTableScan');
@@ -58,7 +58,7 @@ class QueryController extends AbstractController
 
     public function slowQueryAction(): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
         $moduleTemplate->assign('profileRecords', $this->profileRepository->findProfileRecordsWithSlowQueries());
         $moduleTemplate->assign('slowQueryTime', $this->extConf->getSlowQueryTime());
 
@@ -67,7 +67,7 @@ class QueryController extends AbstractController
 
     public function profileInfoAction(int $uid): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
 
         $profileRecord = $this->profileRepository->getProfileRecordByUid($uid);
         $profileRecord['profile'] = unserialize($profileRecord['profile'], ['allowed_classes' => false]);

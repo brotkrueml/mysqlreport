@@ -32,14 +32,15 @@ class ProfileController extends AbstractController
 
     public function listAction(): ResponseInterface
     {
-        $this->view->assign('profileRecords', $this->profileRepository->findProfileRecordsForCall());
+        $moduleTemplate = $this->getView();
+        $moduleTemplate->assign('profileRecords', $this->profileRepository->findProfileRecordsForCall());
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('List');
     }
 
     public function showAction(string $uniqueIdentifier): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
         $moduleTemplate->assign('profileTypes', $this->profileRepository->getProfileRecordsByUniqueIdentifier($uniqueIdentifier));
 
         return $moduleTemplate->renderResponse('Show');
@@ -47,7 +48,7 @@ class ProfileController extends AbstractController
 
     public function queryTypeAction(string $uniqueIdentifier, string $queryType): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
         $moduleTemplate->assign('uniqueIdentifier', $uniqueIdentifier);
         $moduleTemplate->assign('queryType', $queryType);
         $moduleTemplate->assign('profileRecords', $this->profileRepository->getProfileRecordsByQueryType($uniqueIdentifier, $queryType));
@@ -57,7 +58,7 @@ class ProfileController extends AbstractController
 
     public function profileInfoAction(int $uid): ResponseInterface
     {
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate = $this->getView();
 
         $profileRecord = $this->profileRepository->getProfileRecordByUid($uid);
         $profileRecord['profile'] = unserialize($profileRecord['profile'], ['allowed_classes' => false]);
