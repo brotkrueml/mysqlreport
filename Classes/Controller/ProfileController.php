@@ -39,28 +39,32 @@ class ProfileController extends AbstractController
 
     public function showAction(string $uniqueIdentifier): ResponseInterface
     {
-        $this->view->assign('profileTypes', $this->profileRepository->getProfileRecordsByUniqueIdentifier($uniqueIdentifier));
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assign('profileTypes', $this->profileRepository->getProfileRecordsByUniqueIdentifier($uniqueIdentifier));
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('Show');
     }
 
     public function queryTypeAction(string $uniqueIdentifier, string $queryType): ResponseInterface
     {
-        $this->view->assign('uniqueIdentifier', $uniqueIdentifier);
-        $this->view->assign('queryType', $queryType);
-        $this->view->assign('profileRecords', $this->profileRepository->getProfileRecordsByQueryType($uniqueIdentifier, $queryType));
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assign('uniqueIdentifier', $uniqueIdentifier);
+        $moduleTemplate->assign('queryType', $queryType);
+        $moduleTemplate->assign('profileRecords', $this->profileRepository->getProfileRecordsByQueryType($uniqueIdentifier, $queryType));
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('QueryType');
     }
 
     public function profileInfoAction(int $uid): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
         $profileRecord = $this->profileRepository->getProfileRecordByUid($uid);
         $profileRecord['profile'] = unserialize($profileRecord['profile'], ['allowed_classes' => false]);
         $profileRecord['explain'] = unserialize($profileRecord['explain_query'], ['allowed_classes' => false]);
 
-        $this->view->assign('profileRecord', $profileRecord);
+        $moduleTemplate->assign('profileRecord', $profileRecord);
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('ProfileInfo');
     }
 }

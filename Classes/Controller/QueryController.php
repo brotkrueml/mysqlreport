@@ -14,7 +14,6 @@ namespace StefanFroemken\Mysqlreport\Controller;
 use Psr\Http\Message\ResponseInterface;
 use StefanFroemken\Mysqlreport\Configuration\ExtConf;
 use StefanFroemken\Mysqlreport\Domain\Repository\ProfileRepository;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 
 /**
  * Controller to show results of FTS and filesort
@@ -43,34 +42,39 @@ class QueryController extends AbstractController
 
     public function filesortAction(): ResponseInterface
     {
-        $this->view->assign('profileRecords', $this->profileRepository->findProfileRecordsWithFilesort());
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assign('profileRecords', $this->profileRepository->findProfileRecordsWithFilesort());
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('Filesort');
     }
 
     public function fullTableScanAction(): ResponseInterface
     {
-        $this->view->assign('profileRecords', $this->profileRepository->findProfileRecordsWithFullTableScan());
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assign('profileRecords', $this->profileRepository->findProfileRecordsWithFullTableScan());
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('FullTableScan');
     }
 
     public function slowQueryAction(): ResponseInterface
     {
-        $this->view->assign('profileRecords', $this->profileRepository->findProfileRecordsWithSlowQueries());
-        $this->view->assign('slowQueryTime', $this->extConf->getSlowQueryTime());
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assign('profileRecords', $this->profileRepository->findProfileRecordsWithSlowQueries());
+        $moduleTemplate->assign('slowQueryTime', $this->extConf->getSlowQueryTime());
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('SlowQuery');
     }
 
     public function profileInfoAction(int $uid): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
         $profileRecord = $this->profileRepository->getProfileRecordByUid($uid);
         $profileRecord['profile'] = unserialize($profileRecord['profile'], ['allowed_classes' => false]);
         $profileRecord['explain'] = unserialize($profileRecord['explain_query'], ['allowed_classes' => false]);
 
-        $this->view->assign('profileRecord', $profileRecord);
+        $moduleTemplate->assign('profileRecord', $profileRecord);
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('ProfileInfo');
     }
 }

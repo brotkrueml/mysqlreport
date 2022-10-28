@@ -14,7 +14,6 @@ namespace StefanFroemken\Mysqlreport\Controller;
 use Psr\Http\Message\ResponseInterface;
 use StefanFroemken\Mysqlreport\Domain\Repository\StatusRepository;
 use StefanFroemken\Mysqlreport\Menu\Page;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -25,68 +24,82 @@ class MySqlReportController extends AbstractController
     public function overviewAction(): ResponseInterface
     {
         $statusRepository = GeneralUtility::makeInstance(StatusRepository::class);
-        $this->view->assign('status', $statusRepository->findAll());
 
-        return new HtmlResponse($this->view->render());
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->assign('status', $statusRepository->findAll());
+
+        return $moduleTemplate->renderResponse('Overview');
     }
 
     public function informationAction(): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
         $page = $this->pageFinder->getPageByIdentifier('information');
         if ($page instanceof Page) {
-            $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
+            $moduleTemplate->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('Information');
     }
 
     public function innoDbAction(): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
         $page = $this->pageFinder->getPageByIdentifier('innoDb');
         if ($page instanceof Page) {
-            $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
+            $moduleTemplate->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('InnoDb');
     }
 
     public function threadCacheAction(): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
         $page = $this->pageFinder->getPageByIdentifier('threadCache');
         if ($page instanceof Page) {
-            $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
+            $moduleTemplate->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('ThreadCache');
     }
 
     public function tableCacheAction(): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
         $page = $this->pageFinder->getPageByIdentifier('tableCache');
         if ($page instanceof Page) {
-            $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
+            $moduleTemplate->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('TableCache');
     }
 
     public function queryCacheAction(): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
         $page = $this->pageFinder->getPageByIdentifier('queryCache');
         if ($page instanceof Page) {
-            $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
+            $moduleTemplate->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('QueryCache');
     }
 
     public function miscAction(): ResponseInterface
     {
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
         $page = $this->pageFinder->getPageByIdentifier('misc');
         if ($page instanceof Page) {
-            $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
+            $moduleTemplate->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
 
-        return new HtmlResponse($this->view->render());
+        return $moduleTemplate->renderResponse('Misc');
     }
 }
