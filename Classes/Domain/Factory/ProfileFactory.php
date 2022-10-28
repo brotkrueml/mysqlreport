@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace StefanFroemken\Mysqlreport\Domain\Factory;
 
 use StefanFroemken\Mysqlreport\Domain\Model\Profile;
-use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -42,7 +41,7 @@ class ProfileFactory
         $this->ip = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         $this->referer = GeneralUtility::getIndpEnv('HTTP_REFERER');
         $this->request = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        $this->mode = ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend() ? 'FE' : 'BE';
+        $this->mode = $this->getTypo3Mode();
         $this->uniqueCallIdentifier = uniqid('', true);
         $this->crdate = (int)$GLOBALS['EXEC_TIME'];
     }
@@ -66,5 +65,10 @@ class ProfileFactory
         return isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController
             ? $GLOBALS['TSFE']->id
             : 0;
+    }
+
+    private function getTypo3Mode(): string
+    {
+        return GeneralUtility::getIndpEnv('SCRIPT_NAME') === '/typo3/index.php' ? 'BE' : 'FE';
     }
 }

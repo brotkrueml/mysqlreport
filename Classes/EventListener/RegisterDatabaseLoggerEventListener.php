@@ -17,7 +17,8 @@ use StefanFroemken\Mysqlreport\Logger\MySqlReportSqlLogger;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -51,8 +52,10 @@ class RegisterDatabaseLoggerEventListener
         $this->connectionHelper = GeneralUtility::makeInstance(ConnectionHelper::class);
     }
 
-    public function __invoke()
+    public function __invoke(BootCompletedEvent $bootCompletedEvent)
     {
+        $tmp = Environment::getCurrentScript();
+        $arr = GeneralUtility::getIndpEnv('SCRIPT_NAME') === '/typo3/index.php';
         if (!$this->connectionHelper->isConnectionAvailable()) {
             return;
         }
@@ -130,7 +133,7 @@ class RegisterDatabaseLoggerEventListener
         if (
             isset($this->extConf['profileFrontend'])
             && $this->extConf['profileFrontend']
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+            && $this->getTypo3Mode() === 'FE'
         ) {
             return true;
         }
@@ -138,11 +141,16 @@ class RegisterDatabaseLoggerEventListener
         if (
             isset($this->extConf['profileBackend'])
             && $this->extConf['profileBackend']
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
+            && $this->getTypo3Mode() === 'BE'
         ) {
             return true;
         }
 
         return false;
+    }
+
+    private function getTypo3Mode(): string
+    {
+        return GeneralUtility::getIndpEnv('SCRIPT_NAME') === '/typo3/index.php' ? 'BE' : 'FE';
     }
 }
