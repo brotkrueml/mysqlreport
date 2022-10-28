@@ -81,7 +81,7 @@ abstract class AbstractInfoBox implements \SplObserver
         if ($subject instanceof Page) {
             $this->view->assign('body', $this->renderBody($subject));
             $this->view->assign('unorderedList', $this->unorderedList);
-            $this->view->assign('state', (string)$this->state);
+            $this->view->assign('state', (int)(string)$this->state);
 
             // $shouldBeRendered can be modified within renderBody() by a developer
             if ($this->shouldBeRendered) {
