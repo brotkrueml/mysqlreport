@@ -9,7 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace StefanFroemken\Mysqlreport\Hook;
+namespace StefanFroemken\Mysqlreport\EventListener;
 
 use StefanFroemken\Mysqlreport\Helper\ConnectionHelper;
 use StefanFroemken\Mysqlreport\Helper\SqlLoggerHelper;
@@ -17,9 +17,7 @@ use StefanFroemken\Mysqlreport\Logger\MySqlReportSqlLogger;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Currently, this is the earliest hook I could found in TYPO3 universe.
  * All queries executed before this hook were not collected.
  */
-class RegisterDatabaseLoggerHook implements SingletonInterface, TableConfigurationPostProcessingHookInterface
+class RegisterDatabaseLoggerEventListener
 {
     private array $extConf = [];
 
@@ -53,7 +51,7 @@ class RegisterDatabaseLoggerHook implements SingletonInterface, TableConfigurati
         $this->connectionHelper = GeneralUtility::makeInstance(ConnectionHelper::class);
     }
 
-    public function processData(): void
+    public function __invoke()
     {
         if (!$this->connectionHelper->isConnectionAvailable()) {
             return;
