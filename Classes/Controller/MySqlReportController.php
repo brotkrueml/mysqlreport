@@ -11,8 +11,10 @@ declare(strict_types=1);
 
 namespace StefanFroemken\Mysqlreport\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use StefanFroemken\Mysqlreport\Domain\Repository\StatusRepository;
 use StefanFroemken\Mysqlreport\Menu\Page;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -20,57 +22,71 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MySqlReportController extends AbstractController
 {
-    public function overviewAction(): void
+    public function overviewAction(): ResponseInterface
     {
         $statusRepository = GeneralUtility::makeInstance(StatusRepository::class);
         $this->view->assign('status', $statusRepository->findAll());
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function informationAction(): void
+    public function informationAction(): ResponseInterface
     {
         $page = $this->pageFinder->getPageByIdentifier('information');
         if ($page instanceof Page) {
             $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function innoDbAction(): void
+    public function innoDbAction(): ResponseInterface
     {
         $page = $this->pageFinder->getPageByIdentifier('innoDb');
         if ($page instanceof Page) {
             $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function threadCacheAction(): void
+    public function threadCacheAction(): ResponseInterface
     {
         $page = $this->pageFinder->getPageByIdentifier('threadCache');
         if ($page instanceof Page) {
             $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function tableCacheAction(): void
+    public function tableCacheAction(): ResponseInterface
     {
         $page = $this->pageFinder->getPageByIdentifier('tableCache');
         if ($page instanceof Page) {
             $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function queryCacheAction(): void
+    public function queryCacheAction(): ResponseInterface
     {
         $page = $this->pageFinder->getPageByIdentifier('queryCache');
         if ($page instanceof Page) {
             $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function miscAction(): void
+    public function miscAction(): ResponseInterface
     {
         $page = $this->pageFinder->getPageByIdentifier('misc');
         if ($page instanceof Page) {
             $this->view->assign('renderedInfoBoxes', $page->getRenderedInfoBoxes());
         }
+
+        return new HtmlResponse($this->view->render());
     }
 }

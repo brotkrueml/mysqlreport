@@ -11,8 +11,10 @@ declare(strict_types=1);
 
 namespace StefanFroemken\Mysqlreport\Controller;
 
+use Psr\Http\Message\ResponseInterface;
 use StefanFroemken\Mysqlreport\Configuration\ExtConf;
 use StefanFroemken\Mysqlreport\Domain\Repository\ProfileRepository;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 
 /**
  * Controller to show results of FTS and filesort
@@ -39,28 +41,36 @@ class QueryController extends AbstractController
         $this->extConf = $extConf;
     }
 
-    public function filesortAction(): void
+    public function filesortAction(): ResponseInterface
     {
         $this->view->assign('profileRecords', $this->profileRepository->findProfileRecordsWithFilesort());
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function fullTableScanAction(): void
+    public function fullTableScanAction(): ResponseInterface
     {
         $this->view->assign('profileRecords', $this->profileRepository->findProfileRecordsWithFullTableScan());
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function slowQueryAction(): void
+    public function slowQueryAction(): ResponseInterface
     {
         $this->view->assign('profileRecords', $this->profileRepository->findProfileRecordsWithSlowQueries());
         $this->view->assign('slowQueryTime', $this->extConf->getSlowQueryTime());
+
+        return new HtmlResponse($this->view->render());
     }
 
-    public function profileInfoAction(int $uid): void
+    public function profileInfoAction(int $uid): ResponseInterface
     {
         $profileRecord = $this->profileRepository->getProfileRecordByUid($uid);
         $profileRecord['profile'] = unserialize($profileRecord['profile'], ['allowed_classes' => false]);
         $profileRecord['explain'] = unserialize($profileRecord['explain_query'], ['allowed_classes' => false]);
 
         $this->view->assign('profileRecord', $profileRecord);
+
+        return new HtmlResponse($this->view->render());
     }
 }
