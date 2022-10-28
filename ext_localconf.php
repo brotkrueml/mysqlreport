@@ -1,5 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     die ('Access denied.');
 }
 
@@ -7,10 +7,6 @@ if (!defined('TYPO3_MODE')) {
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'][]
     = \StefanFroemken\Mysqlreport\Hook\RegisterDatabaseLoggerHook::class;
 
-// add button to clear cache of profiling table
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'][]
-    = \StefanFroemken\Mysqlreport\Backend\CacheAction::class;
-
-// process truncate of MySQL profiles
+// TRUNCATE table tx_mysqlreport_domain_model_profile on clear cache action
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][]
-    = \StefanFroemken\Mysqlreport\Backend\CacheAction::class . '->clearProfiles';
+    = \StefanFroemken\Mysqlreport\EventListener\CacheAction::class . '->clearProfiles';

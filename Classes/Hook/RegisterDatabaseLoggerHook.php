@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotCon
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\TableConfigurationPostProcessingHookInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -140,7 +141,7 @@ class RegisterDatabaseLoggerHook implements SingletonInterface, TableConfigurati
         if (
             isset($this->extConf['profileFrontend'])
             && $this->extConf['profileFrontend']
-            && TYPO3_MODE === 'FE'
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
         ) {
             return true;
         }
@@ -148,7 +149,7 @@ class RegisterDatabaseLoggerHook implements SingletonInterface, TableConfigurati
         if (
             isset($this->extConf['profileBackend'])
             && $this->extConf['profileBackend']
-            && TYPO3_MODE === 'BE'
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
         ) {
             return true;
         }

@@ -42,3 +42,9 @@ services:
 
   StefanFroemken\Mysqlreport\Menu\PageFinder:
     public: true
+
+  # Register EventListeners for initialize*Actions
+  StefanFroemken\Mysqlreport\EventListener\CacheAction:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Backend\Backend\Event\ModifyClearCacheActionsEvent
