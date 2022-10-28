@@ -13,23 +13,12 @@ namespace StefanFroemken\Mysqlreport\Controller;
 
 use StefanFroemken\Mysqlreport\Configuration\ExtConf;
 use StefanFroemken\Mysqlreport\Domain\Repository\ProfileRepository;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 
 /**
  * Controller to show results of FTS and filesort
  */
 class QueryController extends AbstractController
 {
-    /**
-     * @var BackendTemplateView
-     */
-    protected $view;
-
-    /**
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
     /**
      * @var ProfileRepository
      */

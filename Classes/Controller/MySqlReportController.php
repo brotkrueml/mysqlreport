@@ -13,7 +13,6 @@ namespace StefanFroemken\Mysqlreport\Controller;
 
 use StefanFroemken\Mysqlreport\Domain\Repository\StatusRepository;
 use StefanFroemken\Mysqlreport\Menu\Page;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -21,16 +20,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MySqlReportController extends AbstractController
 {
-    /**
-     * @var BackendTemplateView
-     */
-    protected $view;
-
-    /**
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
     public function overviewAction(): void
     {
         $statusRepository = GeneralUtility::makeInstance(StatusRepository::class);

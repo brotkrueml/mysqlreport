@@ -13,14 +13,14 @@ namespace StefanFroemken\Mysqlreport\Controller;
 
 use StefanFroemken\Mysqlreport\Menu\PageFinder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * Abstract Controller with useful methods like adding buttons to BE view
@@ -32,20 +32,30 @@ abstract class AbstractController extends ActionController
      */
     protected $pageFinder;
 
+    /**
+     * @var ModuleTemplateFactory
+     */
+    protected $moduleTemplateFactory;
+
     public function injectPageFinder(PageFinder $pageFinder): void
     {
         $this->pageFinder = $pageFinder;
     }
 
+    public function injectModuleTemplateFactory(ModuleTemplateFactory $moduleTemplateFactory): void
+    {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+    }
+
     protected function initializeView(ViewInterface $view): void
     {
-        /** @var BackendTemplateView $view */
-        parent::initializeView($view);
-
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
 
-        $buttonBar = $view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->moduleTemplateFactory
+            ->create($this->request)
+            ->getDocHeaderComponent()
+            ->getButtonBar();
 
         // Overview
         $overviewButton = $buttonBar
@@ -65,8 +75,7 @@ abstract class AbstractController extends ActionController
         // Shortcut
         if ($this->getBackendUser()->mayMakeShortcut()) {
             $shortcutButton = $buttonBar->makeShortcutButton()
-                ->setModuleName('system_MysqlreportMysql')
-                ->setGetVariables(['route', 'module', 'id'])
+                ->setRouteIdentifier('system_MysqlreportMysql')
                 ->setDisplayName('Shortcut');
             $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
         }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace StefanFroemken\Mysqlreport\Domain\Repository;
 
+use Doctrine\DBAL\Exception;
 use StefanFroemken\Mysqlreport\Domain\Model\StatusValues;
 
 /**
@@ -20,14 +21,18 @@ class StatusRepository extends AbstractRepository
 {
     public function findAll(): StatusValues
     {
-        $statement = $this->connectionHelper->executeQuery('SHOW GLOBAL STATUS');
-        if ($statement === null) {
+        $result = $this->connectionHelper->executeQuery('SHOW GLOBAL STATUS');
+        if ($result === null) {
             return new StatusValues([]);
         }
 
-        $rows = [];
-        while ($row = $statement->fetchAssociative()) {
-            $rows[$row['Variable_name']] = $row['Value'];
+        try {
+            $rows = [];
+            while ($row = $result->fetchAssociative()) {
+                $rows[$row['Variable_name']] = $row['Value'];
+            }
+        } catch (Exception $exception) {
+            return new StatusValues([]);
         }
 
         return new StatusValues($rows);

@@ -12,23 +12,12 @@ declare(strict_types=1);
 namespace StefanFroemken\Mysqlreport\Controller;
 
 use StefanFroemken\Mysqlreport\Domain\Repository\ProfileRepository;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 
 /**
  * Controller to show and analyze all queries of a request
  */
 class ProfileController extends AbstractController
 {
-    /**
-     * @var BackendTemplateView
-     */
-    protected $view;
-
-    /**
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
     /**
      * @var ProfileRepository
      */

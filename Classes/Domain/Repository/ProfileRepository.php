@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace StefanFroemken\Mysqlreport\Domain\Repository;
 
+use Doctrine\DBAL\Exception;
+
 /**
  * Repository to get records to profile the queries of a request
  */
@@ -26,11 +28,15 @@ class ProfileRepository extends AbstractRepository
             ->orderBy('crdate', 'DESC')
             ->setMaxResults(100);
 
-        $statement = $this->connectionHelper->executeQueryBuilder($queryBuilder);
+        $result = $this->connectionHelper->executeQueryBuilder($queryBuilder);
 
         $profileRecords = [];
-        while ($profileRecord = $statement->fetch()) {
-            $profileRecords[] = $profileRecord;
+        try {
+            while ($profileRecord = $result->fetchAssociative()) {
+                $profileRecords[] = $profileRecord;
+            }
+        } catch (Exception $exception) {
+            return [];
         }
 
         return $profileRecords;
@@ -51,11 +57,15 @@ class ProfileRepository extends AbstractRepository
             ->groupBy('query_type')
             ->orderBy('duration', 'DESC');
 
-        $statement = $this->connectionHelper->executeQueryBuilder($queryBuilder);
+        $result = $this->connectionHelper->executeQueryBuilder($queryBuilder);
 
-        $profileRecords = [];
-        while ($profileRecord = $statement->fetch()) {
-            $profileRecords[] = $profileRecord;
+        try {
+            $profileRecords = [];
+            while ($profileRecord = $result->fetchAssociative()) {
+                $profileRecords[] = $profileRecord;
+            }
+        } catch (Exception $exception) {
+            return [];
         }
 
         return $profileRecords;
@@ -79,11 +89,15 @@ class ProfileRepository extends AbstractRepository
             )
             ->orderBy('duration', 'DESC');
 
-        $statement = $this->connectionHelper->executeQueryBuilder($queryBuilder);
+        $result = $this->connectionHelper->executeQueryBuilder($queryBuilder);
 
-        $profileRecords = [];
-        while ($profileRecord = $statement->fetch()) {
-            $profileRecords[] = $profileRecord;
+        try {
+            $profileRecords = [];
+            while ($profileRecord = $result->fetchAssociative()) {
+                $profileRecords[] = $profileRecord;
+            }
+        } catch (Exception $exception) {
+            return [];
         }
 
         return $profileRecords;
@@ -102,7 +116,11 @@ class ProfileRepository extends AbstractRepository
                 )
             );
 
-        return $this->connectionHelper->executeQueryBuilder($queryBuilder)->fetch() ?: [];
+        try {
+            return $this->connectionHelper->executeQueryBuilder($queryBuilder)->fetchAssociative();
+        } catch (Exception $exception) {
+            return [];
+        }
     }
 
     public function findProfileRecordsWithFilesort(): array
@@ -120,11 +138,15 @@ class ProfileRepository extends AbstractRepository
             ->orderBy('duration', 'DESC')
             ->setMaxResults(100);
 
-        $statement = $this->connectionHelper->executeQueryBuilder($queryBuilder);
+        $result = $this->connectionHelper->executeQueryBuilder($queryBuilder);
 
-        $profileRecords = [];
-        while ($profileRecord = $statement->fetch()) {
-            $profileRecords[] = $profileRecord;
+        try {
+            $profileRecords = [];
+            while ($profileRecord = $result->fetchAssociative()) {
+                $profileRecords[] = $profileRecord;
+            }
+        } catch (Exception $exception) {
+            return [];
         }
 
         return $profileRecords;
@@ -145,11 +167,15 @@ class ProfileRepository extends AbstractRepository
             ->orderBy('duration', 'DESC')
             ->setMaxResults(100);
 
-        $statement = $this->connectionHelper->executeQueryBuilder($queryBuilder);
+        $result = $this->connectionHelper->executeQueryBuilder($queryBuilder);
 
-        $profileRecords = [];
-        while ($profileRecord = $statement->fetch()) {
-            $profileRecords[] = $profileRecord;
+        try {
+            $profileRecords = [];
+            while ($profileRecord = $result->fetchAssociative()) {
+                $profileRecords[] = $profileRecord;
+            }
+        } catch (Exception $exception) {
+            return [];
         }
 
         return $profileRecords;
@@ -170,11 +196,15 @@ class ProfileRepository extends AbstractRepository
             ->orderBy('duration', 'DESC')
             ->setMaxResults(100);
 
-        $statement = $this->connectionHelper->executeQueryBuilder($queryBuilder);
+        $result = $this->connectionHelper->executeQueryBuilder($queryBuilder);
 
-        $profileRecords = [];
-        while ($profileRecord = $statement->fetch()) {
-            $profileRecords[] = $profileRecord;
+        try {
+            $profileRecords = [];
+            while ($profileRecord = $result->fetchAssociative()) {
+                $profileRecords[] = $profileRecord;
+            }
+        } catch (Exception $exception) {
+            return [];
         }
 
         return $profileRecords;

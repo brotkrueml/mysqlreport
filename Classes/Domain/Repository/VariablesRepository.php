@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace StefanFroemken\Mysqlreport\Domain\Repository;
 
+use Doctrine\DBAL\Exception;
 use StefanFroemken\Mysqlreport\Domain\Model\Variables;
 
 /**
@@ -20,14 +21,18 @@ class VariablesRepository extends AbstractRepository
 {
     public function findAll(): Variables
     {
-        $statement = $this->connectionHelper->executeQuery('SHOW GLOBAL VARIABLES');
-        if ($statement === null) {
+        $result = $this->connectionHelper->executeQuery('SHOW GLOBAL VARIABLES');
+        if ($result === null) {
             return new Variables([]);
         }
 
-        $rows = [];
-        while ($row = $statement->fetchAssociative()) {
-            $rows[$row['Variable_name']] = $row['Value'];
+        try {
+            $rows = [];
+            while ($row = $result->fetchAssociative()) {
+                $rows[$row['Variable_name']] = $row['Value'];
+            }
+        } catch (Exception $exception) {
+            return new Variables([]);
         }
 
         return new Variables($rows);

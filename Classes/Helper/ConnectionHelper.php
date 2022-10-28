@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace StefanFroemken\Mysqlreport\Helper;
 
 use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Result;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -50,7 +50,7 @@ class ConnectionHelper
     /**
      * Executes a query which will not be logged by our SQL logger
      */
-    public function executeQuery(string $query): ?Statement
+    public function executeQuery(string $query): ?Result
     {
         if (!$this->isConnectionAvailable()) {
             return null;
@@ -60,14 +60,14 @@ class ConnectionHelper
         $this->sqlLoggerHelper->deactivateSqlLogger();
 
         try {
-            $statement = $this->connection->executeQuery($query);
+            $result = $this->connection->executeQuery($query);
         } catch (Exception $exception) {
-            $statement = null;
+            $result = null;
         }
 
         $this->sqlLoggerHelper->activateSqlLogger($currentSqlLogger);
 
-        return $statement;
+        return $result;
     }
 
     /**
@@ -117,9 +117,9 @@ class ConnectionHelper
         return $this->getConnectionPool()->getQueryBuilderForTable($table);
     }
 
-    public function executeQueryBuilder(QueryBuilder $queryBuilder): Statement
+    public function executeQueryBuilder(QueryBuilder $queryBuilder): Result
     {
-        return $queryBuilder->execute();
+        return $queryBuilder->executeQuery();
     }
 
     private function getConnection(): ?Connection
