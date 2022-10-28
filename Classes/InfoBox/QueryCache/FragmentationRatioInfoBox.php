@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class FragmentationRatioInfoBox extends AbstractInfoBox
 {
-    protected $pageIdentifier = 'queryCache';
+    protected string $pageIdentifier = 'queryCache';
 
-    protected $title = 'Fragmentation Ratio';
+    protected string $title = 'Fragmentation Ratio';
 
     public function renderBody(Page $page): string
     {

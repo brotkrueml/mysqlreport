@@ -30,20 +30,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RegisterDatabaseLoggerHook implements SingletonInterface, TableConfigurationPostProcessingHookInterface
 {
-    /**
-     * @var array
-     */
-    private $extConf = [];
+    private array $extConf = [];
 
-    /**
-     * @var SqlLoggerHelper
-     */
-    private $sqlLoggerHelper;
+    private SqlLoggerHelper $sqlLoggerHelper;
 
-    /**
-     * @var ConnectionHelper
-     */
-    private $connectionHelper;
+    private ConnectionHelper $connectionHelper;
 
     /**
      * Do not add any parameters to this constructor!

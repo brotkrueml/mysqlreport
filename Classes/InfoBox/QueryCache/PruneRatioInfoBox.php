@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PruneRatioInfoBox extends AbstractInfoBox
 {
-    protected $pageIdentifier = 'queryCache';
+    protected string $pageIdentifier = 'queryCache';
 
-    protected $title = 'Prune Ratio';
+    protected string $title = 'Prune Ratio';
 
     public function renderBody(Page $page): string
     {

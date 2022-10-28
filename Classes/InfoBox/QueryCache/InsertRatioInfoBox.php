@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class InsertRatioInfoBox extends AbstractInfoBox
 {
-    protected $pageIdentifier = 'queryCache';
+    protected string $pageIdentifier = 'queryCache';
 
-    protected $title = 'Insert Ratio';
+    protected string $title = 'Insert Ratio';
 
     public function renderBody(Page $page): string
     {

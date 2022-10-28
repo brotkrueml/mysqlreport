@@ -21,10 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SqlLoggerHelper
 {
-    /**
-     * @var Configuration|null
-     */
-    private $configuration;
+    private ?Configuration $configuration;
 
     public function setConnectionConfiguration(?Configuration $configuration): void
     {

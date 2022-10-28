@@ -22,25 +22,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class ExtConf implements SingletonInterface
 {
-    /**
-     * @var bool
-     */
-    protected $profileFrontend = false;
+    protected bool $profileFrontend = false;
 
-    /**
-     * @var bool
-     */
-    protected $profileBackend = false;
+    protected bool $profileBackend = false;
 
-    /**
-     * @var bool
-     */
-    protected $addExplain = false;
+    protected bool $addExplain = false;
 
-    /**
-     * @var float
-     */
-    protected $slowQueryTime = 10.0;
+    protected float $slowQueryTime = 10.0;
 
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {

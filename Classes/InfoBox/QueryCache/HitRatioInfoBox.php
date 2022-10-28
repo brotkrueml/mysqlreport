@@ -23,9 +23,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class HitRatioInfoBox extends AbstractInfoBox
 {
-    protected $pageIdentifier = 'queryCache';
+    protected string $pageIdentifier = 'queryCache';
 
-    protected $title = 'Hit Ratio';
+    protected string $title = 'Hit Ratio';
 
     public function renderBody(Page $page): string
     {

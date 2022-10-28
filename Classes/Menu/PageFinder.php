@@ -21,10 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageFinder
 {
-    /**
-     * @var PackageManager
-     */
-    protected $packageManager;
+    protected PackageManager $packageManager;
 
     public function __construct(PackageManager $packageManager)
     {

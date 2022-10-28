@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class QueryCacheStatusInfoBox extends AbstractInfoBox
 {
-    protected $pageIdentifier = 'queryCache';
+    protected string $pageIdentifier = 'queryCache';
 
-    protected $title = 'Query Cache Status';
+    protected string $title = 'Query Cache Status';
 
     public function renderBody(Page $page): string
     {

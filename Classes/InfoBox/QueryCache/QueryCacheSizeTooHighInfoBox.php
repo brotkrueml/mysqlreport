@@ -22,9 +22,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class QueryCacheSizeTooHighInfoBox extends AbstractInfoBox
 {
-    protected $pageIdentifier = 'queryCache';
+    protected string $pageIdentifier = 'queryCache';
 
-    protected $title = 'Query Cache too high';
+    protected string $title = 'Query Cache too high';
 
     public function renderBody(Page $page): string
     {

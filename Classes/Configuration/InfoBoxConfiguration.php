@@ -19,15 +19,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class InfoBoxConfiguration
 {
-    /**
-     * @var string
-     */
-    private $class = '';
+    private string $class = '';
 
-    /**
-     * @var string
-     */
-    private $pageIdentifier = '';
+    private string $pageIdentifier = '';
 
     public function __construct(array $configuration)
     {

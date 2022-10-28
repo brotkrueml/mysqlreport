@@ -25,15 +25,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ConnectionHelper
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private ?Connection $connection;
 
-    /**
-     * @var SqlLoggerHelper
-     */
-    private $sqlLoggerHelper;
+    private SqlLoggerHelper $sqlLoggerHelper;
 
     /**
      * Do not add any parameters to this constructor!

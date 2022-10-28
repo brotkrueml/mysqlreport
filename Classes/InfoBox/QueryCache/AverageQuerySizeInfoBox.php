@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AverageQuerySizeInfoBox extends AbstractInfoBox
 {
-    protected $pageIdentifier = 'queryCache';
+    protected string $pageIdentifier = 'queryCache';
 
-    protected $title = 'Average Query Size';
+    protected string $title = 'Average Query Size';
 
     public function renderBody(Page $page): string
     {

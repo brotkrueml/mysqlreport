@@ -13,7 +13,6 @@ namespace StefanFroemken\Mysqlreport\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use StefanFroemken\Mysqlreport\Domain\Repository\ProfileRepository;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 
 /**
  * Controller to show and analyze all queries of a request
@@ -23,9 +22,9 @@ class ProfileController extends AbstractController
     /**
      * @var ProfileRepository
      */
-    protected $profileRepository;
+    protected ProfileRepository $profileRepository;
 
-    public function __construct(ProfileRepository $profileRepository)
+    public function injectProfileRepository(ProfileRepository $profileRepository): void
     {
         $this->profileRepository = $profileRepository;
     }
